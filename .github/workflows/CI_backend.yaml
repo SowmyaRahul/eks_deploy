@@ -4,10 +4,13 @@ on:
   push:
     paths:
       - services/backend/**
+      - .github/workflows/CI_backend.yaml
+
       
   pull_request:
     paths:
       - services/backend/**
+      - .github/workflows/CI_backend.yaml
   
 
 jobs:

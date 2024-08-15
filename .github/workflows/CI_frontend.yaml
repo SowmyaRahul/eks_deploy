@@ -4,10 +4,12 @@ on:
   push:
     paths:
       - services/frontend/**
+      - .github/workflows/CI_frontend.yaml
         
   pull_request:
     paths:
       - services/frontend/**
+      - .github/workflows/CI_frontend.yaml
 
 jobs:
   build:
