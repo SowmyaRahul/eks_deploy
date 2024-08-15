@@ -3,14 +3,11 @@ name: CI  frontend Pipeline
 on:
   push:
     paths:
-      - 'services/frontend/**'
-      
-     branches:
-      - main
-    
+      - services/frontend/**
+        
   pull_request:
     paths:
-      - 'services/frontend/**'
+      - services/frontend/**
 
 jobs:
   build:

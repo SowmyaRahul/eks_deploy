@@ -3,11 +3,11 @@ name: CI backend Pipeline
 on:
   push:
     paths:
-      - 'services/backend/**'
+      - services/backend/**
       
   pull_request:
     paths:
-      - 'services/backend/**'
+      - services/backend/**
   
 
 jobs:
