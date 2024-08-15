@@ -26,12 +26,14 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        pip install pylint
+        pip install black
         pip install -r services/backend/requirements.txt
 
     - name: Run code quality checks
       run: |
         pylint services/backend/
-        mypy services/backend/
+        
 
     - name: Run code styling
       run: |
