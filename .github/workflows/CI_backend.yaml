@@ -50,7 +50,7 @@ jobs:
     - name: Build Docker image
       if: github.ref == 'refs/heads/main' 
       run: |
-        docker build -t backend:latest .
+        docker build -t backend:latest services/backend/
 
     - name: Log in to Amazon ECR
       if: github.ref == 'refs/heads/main' 
