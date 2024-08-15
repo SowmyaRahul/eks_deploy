@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI  frontend Pipeline
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        npm install
+        npm install services/frontend/
 
     - name: Run code quality checks
       run: |
