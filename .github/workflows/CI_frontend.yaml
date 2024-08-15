@@ -1,0 +1,72 @@
+name: CI  frontend Pipeline
+
+on:
+  push:
+    paths:
+      - services/frontend/**
+        
+  pull_request:
+    paths:
+      - services/frontend/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x' # Adjust to the version of Node.js you need
+
+    - name: Install dependencies
+      run: |
+        npm install services/frontend/
+
+    - name: Run code quality checks
+      run: |
+        npx eslint services/frontend/src**
+        
+
+    # - name: Run code styling
+    #   run: |
+    #     npx prettier --check services/frontend/src**
+    #     npx stylelint --fix 'services/frontend/**/*.{css,scss}'
+
+    # - name: Build React app
+    #   run: |
+    #     npm run build
+
+     
+
+    - name: Login to AWS
+      if: github.ref == 'refs/heads/main' 
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Build Docker image
+      if: github.ref == 'refs/heads/main' 
+      run: |
+        docker build -t frontend:latest .
+
+    - name: Log in to Amazon ECR
+      if: github.ref == 'refs/heads/main' 
+      id: ecr
+      run: |
+        aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+
+    - name: Tag Docker image
+      if: github.ref == 'refs/heads/main' 
+      run: |
+        docker tag my-image:latest ${{ secrets.ECR_REGISTRY }}/frontendnotes-1:latest
+
+    - name: Push Docker image to Amazon ECR
+      if: github.ref == 'refs/heads/main' 
+      run: |
+        docker push ${{ secrets.ECR_REGISTRY }}/frontendnotes-1:latest
