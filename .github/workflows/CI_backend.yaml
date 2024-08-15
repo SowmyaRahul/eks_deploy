@@ -56,11 +56,15 @@ jobs:
         docker build -t backend:latest services/backend/
 
 
+    # - name: Log in to Amazon ECR
+    #   if: github.ref == 'refs/heads/main'
+    #   id: ecr
+    #   run: |
+    #     aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
     - name: Log in to Amazon ECR
       if: github.ref == 'refs/heads/main' 
-      id: ecr
-      run: |
-        aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
 
     - name: Tag Docker image
       if: github.ref == 'refs/heads/main' 
