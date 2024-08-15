@@ -1,0 +1,70 @@
+name: CI backend Pipeline
+
+on:
+  push:
+    paths:
+      - 'services/backend/**'
+
+     branches:
+      - main
+      
+  pull_request:
+    paths:
+      - 'services/backend/**'
+  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run code quality checks
+      run: |
+        pylint services/backend/
+        mypy services/backend/
+
+    - name: Run code styling
+      run: |
+        black --check services/backend/
+
+    - name: Login to AWS
+      if: github.ref == 'refs/heads/main' 
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Build Docker image
+      if: github.ref == 'refs/heads/main' 
+      run: |
+        docker build -t backend:latest .
+
+    - name: Log in to Amazon ECR
+      if: github.ref == 'refs/heads/main' 
+      id: ecr
+      run: |
+        aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+
+    - name: Tag Docker image
+      if: github.ref == 'refs/heads/main' 
+      run: |
+        docker tag backend:latest ${{ secrets.ECR_REGISTRY }}/backendnotes-1:latest
+
+    - name: Push Docker image to Amazon ECR
+      if: github.ref == 'refs/heads/main' 
+      run: |
+        docker push ${{ secrets.ECR_REGISTRY }}/backendnotes-1:latest
