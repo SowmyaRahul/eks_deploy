@@ -10,13 +10,13 @@ function App() {
   }, []);
 
   const fetchNotes = async () => {
-    const response = await axios.get('http://localhost:5000/api/notes');
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/notes`);
     setNotes(response.data);
   };
 
   const addNote = async () => {
     if (newNote.title && newNote.content) {
-      await axios.post('http://localhost:5000/api/notes', newNote);
+      await axios.post(`${process.env.REACT_APP_API_URL}/notes`, newNote);
       setNewNote({ title: '', content: '' });
       fetchNotes();
     }
@@ -53,3 +53,6 @@ function App() {
 }
 
 export default App;
+
+
+//frontend

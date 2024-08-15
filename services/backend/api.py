@@ -5,12 +5,11 @@ import mysql.connector
 app = Flask(__name__)
 CORS(app)
 
-# Database configuration
 db_config = {
-    'user': 'root',     # Change this to your MySQL username
-    'password': 'password',  # Change this to your MySQL password
-    'host': '172.17.0.2',
-    'database': 'Users',  # Change this to your MySQL database name
+    'user': os.getenv('DB_USER', 'root'),
+    'password': os.getenv('DB_PASSWORD', 'password'),
+    'host': os.getenv('DB_HOST', '172.17.0.2'),
+    'database': os.getenv('DB_NAME', 'Users')
 }
 
 # Connect to the MySQL database
@@ -50,3 +49,5 @@ def add_note():
 
 if __name__ == '__main__':
      app.run(host='0.0.0.0', port=5000, debug=True)
+
+//backend
