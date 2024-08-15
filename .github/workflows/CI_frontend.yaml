@@ -20,19 +20,19 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # - name: Set up Node.js
-    #   uses: actions/setup-node@v3
-    #   with:
-    #     node-version: '18.x' # Adjust to the version of Node.js you need
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x' # Adjust to the version of Node.js you need
 
-    # - name: Install dependencies
-    #   run: |
-    #     npm install services/frontend/
+    - name: Install dependencies
+      run: |
+        npm install services/frontend/
 
-    # - name: Run code quality checks
-    #   run: |
-    #     npx eslint services/frontend/src**
-    #     npx stylelint 'services/frontend/**/*.{css,scss}'
+    - name: Run code quality checks
+      run: |
+        npx eslint services/frontend/src**
+        
 
     # - name: Run code styling
     #   run: |

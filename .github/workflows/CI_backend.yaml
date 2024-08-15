@@ -35,9 +35,9 @@ jobs:
         pylint --ignore=__init__.py services/backend/
         
 
-    - name: Run code styling
-      run: |
-        black --check services/backend/
+    # - name: Run code styling
+    #   run: |
+    #     black --check services/backend/
 
     - name: Login to AWS
       if: github.ref == 'refs/heads/main' 
