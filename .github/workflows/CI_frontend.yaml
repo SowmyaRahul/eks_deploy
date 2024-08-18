@@ -58,7 +58,6 @@ jobs:
         docker build -t frontend:latest services/frontend/
 
 
-
     # - name: Log in to Amazon ECR
     #   if: github.ref == 'refs/heads/main' 
     #   id: ecr
