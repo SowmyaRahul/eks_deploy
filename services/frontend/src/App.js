@@ -7,7 +7,8 @@ function App() {
 
   useEffect(() => {
     fetchNotes();
-  }, []);
+  }, []
+);
 
   const fetchNotes = async () => {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/notes`);
