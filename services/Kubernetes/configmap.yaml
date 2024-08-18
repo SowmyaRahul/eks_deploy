@@ -3,17 +3,21 @@ kind: ConfigMap
 metadata:
   name: app-config
 data:
-  REACT_APP_API_URL: "http://localhost:5000/api"
-  DB_HOST: "172.17.0.2"      <RDS DB HOST>
-  DB_NAME: "Users"
+  REACT_APP_API_URL: "http://backend-service:8080/api"
+  DB_HOST: "project1.cb6oyio086hd.us-west-2.rds.amazonaws.com"      
+  DB_NAME: "project1dbname"
+  DB_USER: "project1uname"
+  
+
 
   
   # Add more configuration items here as needed
 ---
+
 apiVersion: v1
 kind: Secret
 metadata:
   name: db-secret
 type: Opaque
 data:
-  db-password: c2VjcmV0cGFzcw==  # Base64-encoded 'secretpass' <encode it when using>
+  DB_PASSWORD: cHJvamVjdDFwd2Q=  # Base64-encoded 'secretpass' <encode it when using>

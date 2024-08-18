@@ -5,7 +5,7 @@ metadata:
   labels:
     app: backend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: backend
@@ -16,12 +16,27 @@ spec:
     spec:
       containers:
       - name: backend
-        image: <ECR registry >:latest
+        image: 637423519309.dkr.ecr.us-west-2.amazonaws.com/backendnotes-1:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 5000
         env:
-        - name: DATABASE_URL
+        - name: DB_HOST
           valueFrom:
             configMapKeyRef:
               name: app-config
-              key: BACKEND_DATABASE_URL
+              key: DB_HOST
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_NAME
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_USER
+         - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-config
+              key: DB_PASSWORD

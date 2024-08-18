@@ -10,13 +10,15 @@ function App() {
   }, []);
 
   const fetchNotes = async () => {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/notes`);
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
+    const response = await axios.get(`${apiBaseUrl}/api/notes`);
     setNotes(response.data);
   };
 
   const addNote = async () => {
     if (newNote.title && newNote.content) {
-      await axios.post(`${process.env.REACT_APP_API_URL}/notes`, newNote);
+      const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
+      await axios.post(`${apiBaseUrl}/api/notes`, newNote);
       setNewNote({ title: '', content: '' });
       fetchNotes();
     }
@@ -53,6 +55,3 @@ function App() {
 }
 
 export default App;
-
-
-//frontend
