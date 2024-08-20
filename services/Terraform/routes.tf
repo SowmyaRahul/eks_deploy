@@ -15,7 +15,8 @@ resource "aws_nat_gateway" "nat_gateway_1" {
 
 # Create Elastic IPs for NAT Gateways
 resource "aws_eip" "nat_eip_1" {
-  vpc = true
+ // vpc = true //vpc depreciated
+ domain = "vpc"
 }
 
 

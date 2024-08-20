@@ -1,57 +1,89 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 
-function App() {
+const NotesComponent = () => {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState({ title: '', content: '' });
+  const [editingNote, setEditingNote] = useState(null);
 
   useEffect(() => {
     fetchNotes();
   }, []);
 
   const fetchNotes = async () => {
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     const response = await axios.get(`${apiBaseUrl}/api/notes`);
     setNotes(response.data);
   };
 
   const addNote = async () => {
     if (newNote.title && newNote.content) {
-      const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
+      const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
       await axios.post(`${apiBaseUrl}/api/notes`, newNote);
       setNewNote({ title: '', content: '' });
       fetchNotes();
     }
   };
 
+  const updateNote = async (id) => {
+    const apiBaseUrl1 = process.env.REACT_APP_API_BASE_URL;
+    await axios.put(`${apiBaseUrl1}/api/udnotes/${id}`, editingNote);
+    setEditingNote(null); // Clear the editing state
+    fetchNotes();
+  };
+
+  const deleteNote = async (id) => {
+    const apiBaseUrl1 = process.env.REACT_APP_API_BASE_URL;
+    await axios.delete(`${apiBaseUrl1}/api/udnotes/${id}`);
+    fetchNotes();
+  };
+
   return (
-    <div className="App">
-      <h1>Notes</h1>
+    <div>
+      <h2>Notes</h2>
       <ul>
-        {notes.map((note) => (
+        {notes.map(note => (
           <li key={note.id}>
-            <h3>{note.title}</h3>
-            <p>{note.content}</p>
+            {editingNote && editingNote.id === note.id ? (
+              <>
+                <input
+                  type="text"
+                  value={editingNote.title}
+                  onChange={(e) => setEditingNote({ ...editingNote, title: e.target.value })}
+                />
+                <textarea
+                  value={editingNote.content}
+                  onChange={(e) => setEditingNote({ ...editingNote, content: e.target.value })}
+                />
+                <button onClick={() => updateNote(note.id)}>Save</button>
+                <button onClick={() => setEditingNote(null)}>Cancel</button>
+              </>
+            ) : (
+              <>
+                <h3>{note.title}</h3>
+                <p>{note.content}</p>
+                <button onClick={() => setEditingNote(note)}>Edit</button>
+                <button onClick={() => deleteNote(note.id)}>Delete</button>
+              </>
+            )}
           </li>
         ))}
       </ul>
       <h2>Add a New Note</h2>
       <input
         type="text"
-        placeholder="Title"
         value={newNote.title}
         onChange={(e) => setNewNote({ ...newNote, title: e.target.value })}
+        placeholder="Title"
       />
-      <br />
       <textarea
-        placeholder="Content"
         value={newNote.content}
         onChange={(e) => setNewNote({ ...newNote, content: e.target.value })}
+        placeholder="Content"
       />
-      <br />
       <button onClick={addNote}>Add Note</button>
     </div>
   );
-}
+};
 
-export default App;
+export default NotesComponent;

@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  annotations:
+   // nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Disable SSL redirect if not using TLS
+spec:
+  rules:
+  - host: <LB>ngnix  # Replace with your domain
+    http:
+      paths:
+      - path: /api/notes
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service-1
+            port:
+              number: 5000
+      - path: 
+        pathType: Prefix
+        backend:/api/udnotes
+          service:
+            name: backend-service-updatendelete
+            port:
+              number: 5001
+

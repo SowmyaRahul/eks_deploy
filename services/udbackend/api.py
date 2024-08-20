@@ -25,31 +25,9 @@ def hello():
     return "Hello, World!"
 
 
-@app.route('/api/notes', methods=['GET'])
-def list_notes():
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM notes")
-    notes = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return jsonify(notes)
 
-@app.route('/api/notes', methods=['POST'])
-def add_note():
-    new_note = request.json
-    title = new_note['title']
-    content = new_note['content']
-    
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO notes (title, content) VALUES (%s, %s)", (title, content))
-    conn.commit()
-    cursor.close()
-    conn.close()
-    return jsonify({'message': 'Note added successfully!'}), 201
 
-@app.route('/api/notes/<int:id>', methods=['PUT'])
+@app.route('/api/udnotes/<int:id>', methods=['PUT'])
 def update_note(id):
     updated_note = request.json
     title = updated_note.get('title')
@@ -70,7 +48,7 @@ def update_note(id):
 
     return jsonify({'message': 'Note updated successfully!'}), 200
 
-@app.route('/api/notes/<int:id>', methods=['DELETE'])
+@app.route('/api/udnotes/<int:id>', methods=['DELETE'])
 def delete_note(id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -86,5 +64,5 @@ def delete_note(id):
 
 
 if __name__ == '__main__':
-     app.run(host='0.0.0.0', port=5000, debug=True)
+     app.run(host='0.0.0.0', port=5001, debug=True)
 
