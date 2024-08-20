@@ -3,20 +3,20 @@ kind: Deployment
 metadata:
   name: backend-deployment
   labels:
-    app: backend-service
+    app: backend-service-ud
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: backend-service
+      app: backend-service-ud
   template:
     metadata:
       labels:
-        app: backend-service
+        app: backend-service-ud
     spec:
       containers:
-      - name: backend-service
-        image: 637423519309.dkr.ecr.us-west-2.amazonaws.com/backendnotes-1:latest
+      - name: backend
+        image: 637423519309.dkr.ecr.us-west-2.amazonaws.com/backendnotes-2:latest
         ports:
         - containerPort: 5000
         env:

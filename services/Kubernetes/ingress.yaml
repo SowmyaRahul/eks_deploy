@@ -17,9 +17,9 @@ spec:
             name: backend-service-1
             port:
               number: 5000
-      - path: 
+      - path: /api/udnotes
         pathType: Prefix
-        backend:/api/udnotes
+        backend: 
           service:
             name: backend-service-updatendelete
             port:
