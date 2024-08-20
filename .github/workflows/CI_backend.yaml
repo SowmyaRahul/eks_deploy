@@ -54,6 +54,7 @@ jobs:
       if: github.ref == 'refs/heads/main' 
       run: |
         docker build -t backend:latest services/backend/
+        docker build -t backendud:latest services/udbackend/
 
     # - name: Log in to Amazon ECR
     #   if: github.ref == 'refs/heads/main' 
@@ -70,8 +71,10 @@ jobs:
       if: github.ref == 'refs/heads/main' 
       run: |
         docker tag backend:latest ${{ secrets.ECR_REGISTRY }}/backendnotes-1:latest
+        docker tag backendud:latest ${{ secrets.ECR_REGISTRY }}/backendnotes-2:latest
 
     - name: Push Docker image to Amazon ECR
       if: github.ref == 'refs/heads/main' 
       run: |
         docker push ${{ secrets.ECR_REGISTRY }}/backendnotes-1:latest
+        docker push ${{ secrets.ECR_REGISTRY }}/backendnotes-2:latest
