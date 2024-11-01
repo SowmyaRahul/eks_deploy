@@ -95,6 +95,10 @@ def rahul():
 def yoga():
     return jsonify({'message': 'YOGA successfully!'}), 200
 
+@app.route('/api/notes/shambhoo', methods=['GET'])
+def rahul():
+    return jsonify({'message': 'yoga is shambhooo'}), 200
+
 
 if __name__ == '__main__':
      app.run(host='0.0.0.0', port=5000, debug=True)
