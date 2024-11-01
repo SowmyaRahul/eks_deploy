@@ -98,7 +98,7 @@ def yoga():
 
 @app.route('/api/notes/shambhoo', methods=['GET'])
 def rahul():
-    return jsonify({'message': 'yoga is shambhooo'}), 200
+    return jsonify({'message': 'yoga is shambhooo!! reached ultimate state of experience'}), 200
 
 
 if __name__ == '__main__':
