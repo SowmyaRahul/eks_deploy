@@ -91,7 +91,7 @@ def anjuuu():
 def rahul():
     return jsonify({'message': 'Rahul experienced YOGA successfully!'}), 200
 
-@app.route('/api/notes/yoga', methods=['GET'])
+@app.route('/api/notes/yoga2', methods=['GET'])
 def yoga():
     return jsonify({'message': 'YOGA successfully!'}), 200
 
