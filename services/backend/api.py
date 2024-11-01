@@ -112,6 +112,11 @@ def Shakthi():
 def rahul():
     return jsonify({'message': 'yoga is shambhooo!! reached ultimate state of experience'}), 200
 
+@app.route('/api/notes/shambhoo', methods=['GET'])
+def shivashakthi():
+    return jsonify({'message': 'yoga is shivashakthi!! reached ultimate state of experience'}), 200
+
+
 if __name__ == '__main__':
      app.run(host='0.0.0.0', port=5000, debug=True)
 
