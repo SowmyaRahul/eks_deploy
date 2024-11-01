@@ -92,7 +92,7 @@ def anjuuu():
     return jsonify({'message': 'anjuuu experienced YOGA successfully!'}), 200
 
 @app.route('/api/notes/guru2', methods=['GET'])
-def rahul():
+def guru():
     return jsonify({'message': 'yoga is shambhooo!! GURU is doorway and light'}), 200
 
 @app.route('/api/notes/yoga2', methods=['GET'])
@@ -100,8 +100,13 @@ def yoga():
     return jsonify({'message': 'YOGA successfully!'}), 200
 
 @app.route('/api/notes/guru', methods=['GET'])
-def rahul():
+def guruu():
     return jsonify({'message': 'yoga is shambhooo!! GURU is doorway'}), 200
+
+@app.route('/api/notes/devi', methods=['GET'])
+def Shakthi():
+    return jsonify({'message': 'Shakthi'}), 200
+
 
 @app.route('/api/notes/shambhoo', methods=['GET'])
 def rahul():
