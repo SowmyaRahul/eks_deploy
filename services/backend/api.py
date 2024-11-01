@@ -95,6 +95,11 @@ def anjuuu():
 def yoga():
     return jsonify({'message': 'YOGA successfully!'}), 200
 
+@app.route('/api/notes/guru', methods=['GET'])
+def rahul():
+    return jsonify({'message': 'yoga is shambhooo!! GURU is doorway'}), 200
+
+
 @app.route('/api/notes/shambhoo', methods=['GET'])
 def rahul():
     return jsonify({'message': 'yoga is shambhooo!! reached ultimate state of experience'}), 200
