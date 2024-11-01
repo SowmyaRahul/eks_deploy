@@ -84,6 +84,9 @@ def delete_note(id):
     return jsonify({'message': 'Note deleted successfully!'}), 200
 
 
+@app.route('/api/notes/yoga', methods=['GET'])
+def yoga():
+    return jsonify({'message': 'YOGA successfully!'}), 200
 
 if __name__ == '__main__':
      app.run(host='0.0.0.0', port=5000, debug=True)
