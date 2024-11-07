@@ -14,14 +14,14 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: backend-service-1
+            name: backend-service
             port:
               number: 5000
       - path: /api/udnotes
         pathType: Prefix
         backend: 
           service:
-            name: backend-service-updatendelete
+            name: backend-service-ud
             port:
               number: 5001
 

@@ -26,14 +26,14 @@ const NotesComponent = () => {
   };
 
   const updateNote = async (id) => {
-    const apiBaseUrl1 = process.env.REACT_APP_API_BASE_URL;
+    const apiBaseUrl1 = process.env.REACT_APP_API_BASE_URL_UD;
     await axios.put(`${apiBaseUrl1}/api/udnotes/${id}`, editingNote);
     setEditingNote(null); // Clear the editing state
     fetchNotes();
   };
 
   const deleteNote = async (id) => {
-    const apiBaseUrl1 = process.env.REACT_APP_API_BASE_URL;
+    const apiBaseUrl1 = process.env.REACT_APP_API_BASE_URL_UD;
     await axios.delete(`${apiBaseUrl1}/api/udnotes/${id}`);
     fetchNotes();
   };

@@ -49,39 +49,39 @@ def add_note():
     conn.close()
     return jsonify({'message': 'Note added successfully!'}), 201
 
-@app.route('/api/notes/<int:id>', methods=['PUT'])
-def update_note(id):
-    updated_note = request.json
-    title = updated_note.get('title')
-    content = updated_note.get('content')
+# @app.route('/api/notes/<int:id>', methods=['PUT'])
+# def update_note(id):
+#     updated_note = request.json
+#     title = updated_note.get('title')
+#     content = updated_note.get('content')
 
-    conn = get_db_connection()
-    cursor = conn.cursor()
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
 
-    cursor.execute("""
-        UPDATE notes
-        SET title = %s, content = %s
-        WHERE id = %s
-    """, (title, content, id))
+#     cursor.execute("""
+#         UPDATE notes
+#         SET title = %s, content = %s
+#         WHERE id = %s
+#     """, (title, content, id))
 
-    conn.commit()
-    cursor.close()
-    conn.close()
+#     conn.commit()
+#     cursor.close()
+#     conn.close()
 
-    return jsonify({'message': 'Note updated successfully!'}), 200
+#     return jsonify({'message': 'Note updated successfully!'}), 200
 
-@app.route('/api/notes/<int:id>', methods=['DELETE'])
-def delete_note(id):
-    conn = get_db_connection()
-    cursor = conn.cursor()
+# @app.route('/api/notes/<int:id>', methods=['DELETE'])
+# def delete_note(id):
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
 
-    cursor.execute("DELETE FROM notes WHERE id = %s", (id,))
+#     cursor.execute("DELETE FROM notes WHERE id = %s", (id,))
 
-    conn.commit()
-    cursor.close()
-    conn.close()
+#     conn.commit()
+#     cursor.close()
+#     conn.close()
 
-    return jsonify({'message': 'Note deleted successfully!'}), 200
+#     return jsonify({'message': 'Note deleted successfully!'}), 200
 
 @app.route('/api/notes/rahul2', methods=['GET'])
 def rahul():

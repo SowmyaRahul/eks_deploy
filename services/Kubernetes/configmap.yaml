@@ -4,6 +4,7 @@ metadata:
   name: app-config
 data:
   REACT_APP_API_URL: "http://backend-service:8080/api"
+  REACT_APP_API_BASE_URL_UD: "http://backend-service-ud:8080/api
   DB_HOST: "project1.cb6oyio086hd.us-west-2.rds.amazonaws.com"      
   DB_NAME: "project1dbname"
   DB_USER: "project1uname"

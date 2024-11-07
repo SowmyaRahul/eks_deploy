@@ -21,9 +21,9 @@ module "eks" {
   eks_managed_node_groups = {
 
     node_group = {
-      min_size     = 0
+      min_size     = 1
       max_size     = 1
-      desired_size = 0
+      desired_size = 1
     }
     update_config = {
          max_unavailable            = 1
