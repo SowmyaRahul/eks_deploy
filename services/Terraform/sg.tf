@@ -1,6 +1,6 @@
 #securitygroup for instance
-resource "aws_security_group" "instance_sg" {
-  name        = "instance-sg"
+resource "aws_security_group" "db_instance" {
+  name        = "db-instance-sg"
   description = "Allow HTTP and SSH traffic"
   vpc_id      = aws_vpc.main.id
 
@@ -26,7 +26,7 @@ resource "aws_security_group" "instance_sg" {
   }
 
   tags = {
-    Name = "instance-sg"
+    Name = "db_instance-sg"
   }
 }
 
