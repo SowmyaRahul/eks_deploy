@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 db_config = {
-    'user': os.getenv('DB_USER', 'root'),
+    'user': os.getenv('DB_USER', 'user'),
     'password': os.getenv('DB_PASSWORD', 'password'),
     'host': os.getenv('DB_HOST', '172.17.0.2'),
     'database': os.getenv('DB_NAME', 'Users')
