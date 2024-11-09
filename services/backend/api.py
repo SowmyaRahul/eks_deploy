@@ -20,7 +20,7 @@ def get_db_connection():
     conn = mysql.connector.connect(**db_config)
     return conn
 
-@app.route('/')
+@app.route('/hello')
 def hello():
     return "Hello, World!"
 
@@ -52,4 +52,3 @@ def add_note():
 
 if __name__ == '__main__':
      app.run(host='0.0.0.0', port=5000, debug=True)
-
