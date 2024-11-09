@@ -10,3 +10,6 @@ docker run -p 5000:5000 -e DB_USER=root -e DB_PASSWORD=password -e DB_HOST=172.1
 docker run -p 5000:5000 -e DB_USER=root -e DB_PASSWORD=password -e DB_HOST=172.17.0.5 -e DB_NAME=Users udbackend
 
  docker run -p 3000:3000 -e REACT_APP_API_BASE_URL=http://127.0.0.1:5000 -e REACT_APP_API_BASE_URL_UD=http://127.0.0.1:5001  frontend
+
+
+ aws eks --region us-west-2 update-kubeconfig --name sowmiya-cluster

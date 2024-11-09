@@ -70,7 +70,7 @@ jobs:
     - name: Tag Docker image
       if: github.ref == 'refs/heads/main' 
       run: |
-        docker tag backend:latest ${{ secrets.ECR_REGISTRY }}/backendnotes-1:latest
+        docker tag backend:latest ${{ secrets.ECR_REGISTRY }}/backend-1:latest
         docker tag backendud:latest ${{ secrets.ECR_REGISTRY }}/backendnotes-2:latest
 
     - name: Push Docker image to Amazon ECR
