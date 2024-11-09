@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 db_config = {
-    'user': os.getenv('DB_USER', 'root'),
+    'user': os.getenv('DB_USER', 'user'),
     'password': os.getenv('DB_PASSWORD', 'password'),
     'host': os.getenv('DB_HOST', '172.17.0.2'),
     'database': os.getenv('DB_NAME', 'Users')
@@ -20,11 +20,9 @@ def get_db_connection():
     conn = mysql.connector.connect(**db_config)
     return conn
 
-@app.route('/api/notes/health')
+@app.route('/hello')
 def hello():
     return "Hello, World!"
-
-
 
 
 @app.route('/api/notes', methods=['GET'])
@@ -52,7 +50,5 @@ def add_note():
     return jsonify({'message': 'Note added successfully!'}), 201
 
 
-
 if __name__ == '__main__':
      app.run(host='0.0.0.0', port=5000, debug=True)
-
