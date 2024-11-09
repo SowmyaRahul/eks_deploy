@@ -76,5 +76,5 @@ jobs:
     - name: Push Docker image to Amazon ECR
       if: github.ref == 'refs/heads/main' 
       run: |
-        docker push ${{ secrets.ECR_REGISTRY }}/backendnotes-1:latest
+        docker push ${{ secrets.ECR_REGISTRY }}/backend-1:latest
         docker push ${{ secrets.ECR_REGISTRY }}/backendnotes-2:latest
