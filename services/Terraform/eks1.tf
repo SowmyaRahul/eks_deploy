@@ -3,7 +3,7 @@ module "eks" {
   version         = "20.8.4"
   cluster_name    = "sowmiya-cluster"
   cluster_version = var.kubernetes_version
-  subnet_ids      = [aws_subnet.subnet_az1_secure.id, aws_subnet.subnet_az2_secure.id]
+  subnet_ids      = [aws_subnet.subnet_az1_public.id, aws_subnet.subnet_az2_public.id, aws_subnet.subnet_az1_secure.id, aws_subnet.subnet_az2_secure.id ]
 
   enable_irsa = true
 
@@ -22,13 +22,12 @@ module "eks" {
 
     node_group = {
       min_size     = 1
-      max_size     = 1
-      desired_size = 1
+      max_size     = 5
+      desired_size = 4
+      subnet_ids = [ aws_subnet.subnet_az1_secure.id, aws_subnet.subnet_az2_secure.id ]
+
     }
-    update_config = {
-         max_unavailable            = 1
-          max_unavailable_percentage = 0
-        }
+  
   }
 }
 

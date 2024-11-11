@@ -19,6 +19,7 @@ resource "aws_subnet" "subnet_az1_public" {
 
   tags = {
     Name = "SubnetAZ1Public"
+    "kubernetes.io/role/elb" = "1"
   }
 }
 resource "aws_subnet" "subnet_az2_public" {
@@ -28,6 +29,7 @@ resource "aws_subnet" "subnet_az2_public" {
 
   tags = {
     Name = "SubnetAZ2Public"
+    "kubernetes.io/role/elb" = "1"
   }
 }
 
@@ -40,6 +42,8 @@ resource "aws_subnet" "subnet_az1_private" {
 
   tags = {
     Name = "SubnetAZ1Private"
+        "kubernetes.io/role/internal-elb" = 1
+
   }
 }
 resource "aws_subnet" "subnet_az2_private" {
@@ -49,6 +53,7 @@ resource "aws_subnet" "subnet_az2_private" {
 
   tags = {
     Name = "SubnetAZ2Private"
+    "kubernetes.io/role/internal-elb" = 1
   }
 }
 resource "aws_subnet" "subnet_az1_secure" {
@@ -58,6 +63,8 @@ resource "aws_subnet" "subnet_az1_secure" {
 
   tags = {
     Name = "SubnetAZ1Secure"
+        "kubernetes.io/role/internal-elb" = 1
+
   }
 }
 resource "aws_subnet" "subnet_az2_secure" {
@@ -67,6 +74,8 @@ resource "aws_subnet" "subnet_az2_secure" {
 
   tags = {
     Name = "SubnetAZ2Secure"
+        "kubernetes.io/role/internal-elb" = 1
+
   }
 }
 

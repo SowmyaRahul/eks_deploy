@@ -1,0 +1,230 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  REACT_APP_API_BASE_URL: "http://k8s-default-appingre-53ef42f138-1167815267.us-west-2.elb.amazonaws.com"
+  REACT_APP_API_BASE_URL_UD: "http://k8s-default-appingre-53ef42f138-1167815267.us-west-2.elb.amazonaws.com"
+  DB_HOST: "project1.cb6oyio086hd.us-west-2.rds.amazonaws.com"
+  DB_NAME: "project1dbname"
+  DB_USER: "project1uname"
+
+  # Add more configuration items here as needed
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-secret
+type: Opaque
+data:
+  DB_PASSWORD: cHJvamVjdDFwd2Q=  # Base64-encoded 'secretpass' <encode it when using>
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backend-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-service
+  template:
+    metadata:
+      labels:
+        app: backend-service
+    spec:
+      containers:
+      - name: backend-service
+        image: 637423519309.dkr.ecr.us-west-2.amazonaws.com/backend-1:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_HOST
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_NAME
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_PASSWORD
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment-ud
+  labels:
+    app: backend-service-ud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-service-ud
+  template:
+    metadata:
+      labels:
+        app: backend-service-ud
+    spec:
+      containers:
+      - name: backend
+        image: 637423519309.dkr.ecr.us-west-2.amazonaws.com/backendnotes-2:latest
+        ports:
+        - containerPort: 5001
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_HOST
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_NAME
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_PASSWORD
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: 637423519309.dkr.ecr.us-west-2.amazonaws.com/frontendnotes-1:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: REACT_APP_API_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: REACT_APP_API_BASE_URL
+        - name: REACT_APP_API_BASE_URL_UD
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: REACT_APP_API_BASE_URL_UD
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  type: ClusterIP
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: ClusterIP
+  selector:
+    app: backend-service
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 5000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service-ud
+spec:
+  type: ClusterIP
+  selector:
+    app: backend-service-ud
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 5001
+
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+spec:
+  ingressClassName: alb
+  rules:
+   # Replace with your domain
+  - http:
+      paths:
+      - path: /api/notes
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service
+            port:
+              number: 8080
+      - path: /api/udnotes
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service-ud
+            port:
+              number: 8080
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80

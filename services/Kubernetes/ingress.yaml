@@ -3,12 +3,14 @@ kind: Ingress
 metadata:
   name: app-ingress
   annotations:
-   // nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Disable SSL redirect if not using TLS
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
 spec:
+  ingressClassName: alb
   rules:
-  - host: <LB>ngnix  # Replace with your domain
-    http:
+   # Replace with your domain
+  - http:
       paths:
       - path: /api/notes
         pathType: Prefix
@@ -16,12 +18,18 @@ spec:
           service:
             name: backend-service
             port:
-              number: 5000
+              number: 8080
       - path: /api/udnotes
         pathType: Prefix
-        backend: 
+        backend:
           service:
             name: backend-service-ud
             port:
-              number: 5001
-
+              number: 8080
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80
