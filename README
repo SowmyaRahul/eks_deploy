@@ -1,3 +1,5 @@
+ Local Setup
+ 
  docker build -t frontend .
 
  docker build -t backend .
@@ -9,7 +11,101 @@ docker run -p 5000:5000 -e DB_USER=root -e DB_PASSWORD=password -e DB_HOST=172.1
 
 docker run -p 5000:5000 -e DB_USER=root -e DB_PASSWORD=password -e DB_HOST=172.17.0.5 -e DB_NAME=Users udbackend
 
- docker run -p 3000:3000 -e REACT_APP_API_BASE_URL=http://127.0.0.1:5000 -e REACT_APP_API_BASE_URL_UD=http://127.0.0.1:5001  frontend
+docker run -p 3000:3000 -e REACT_APP_API_BASE_URL=http://127.0.0.1:5000 -e REACT_APP_API_BASE_URL_UD=http://127.0.0.1:5001  frontend
+
 
 
  aws eks --region us-west-2 update-kubeconfig --name sowmiya-cluster
+
+# image: 637423519309.dkr.ecr.us-west-2.amazonaws.com/backendnotes-1:latest
+
+image: 637423519309.dkr.ecr.us-west-2.amazonaws.com/backendnotes-2:latest
+
+image: 637423519309.dkr.ecr.us-west-2.amazonaws.com/frontendnotes-1:latest
+
+
+sudo dnf install mariadb105
+
+mysql -h project1.cb6oyio086hd.us-west-2.rds.amazonaws.com -P 3306 -u project1uname -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MySQL connection id is 27
+Server version: 8.0.35 Source distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MySQL [(none)]> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| project1dbname     |
+| sys                |
++--------------------+
+5 rows in set (0.002 sec)
+
+MySQL [(none)]> CREATE TABLE notes (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL, content TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+ERROR 1046 (3D000): No database selected
+MySQL [(none)]> USE project1dbname;
+Database changed
+MySQL [project1dbname]> CREATE TABLE notes (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL, content TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+Query OK, 0 rows affected (0.015 sec)
+
+MySQL [project1dbname]> INSERT INTO notes (title, content) VALUES ('First Note', 'This is the content of the first note.');
+Query OK, 1 row affected (0.002 sec)
+
+MySQL [project1dbname]> CREATE TABLE notes (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL, content TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);^C
+
+
+
+
+Steps:
+
+
+
+
+
+Install Kubectl
+
+curl -LO "https://dl.k8s.io/release/v1.27.3/bin/linux/amd64/kubectl"
+
+chmod +x ./kubectl && sudo mv ./kubectl /usr/local/bin/kubectl
+
+connect:
+
+aws eks --region us-west-2 update-kubeconfig --name sowmiya-cluster
+
+Install eksctl
+
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/v0.132.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+
+
+
+curl -LO https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.4/docs/install/iam_policy.json
+
+aws iam create-policy --policy-name AWSLoadBalancerControllerIAMPolicy --policy-document file://iam_policy.json
+
+eksctl utils associate-iam-oidc-provider --region=us-west-2 --cluster=sowmiya-cluster --approve
+
+eksctl create iamserviceaccount --cluster=sowmiya-cluster --namespace=kube-system --name=aws-load-balancer-controller-new --role-name AmazonEKSLoadBalancerControllerRoleNew --attach-policy-arn=arn:aws:iam::637423519309:policy/AWSLoadBalancerControllerIAMPolicy --approve --region=us-west-2
+
+
+curl https://get.helm.sh/helm-v3.11.2-linux-amd64.tar.gz -L -o helm.tar.gz && tar -zxvf helm.tar.gz && sudo mv linux-amd64/helm /usr/local/bin/helm && rm -rf linux-amd64 helm.tar.gz
+helm repo add eks https://aws.github.io/eks-charts
+helm repo update eks
+
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=sowmiya-cluster --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller-new
+helm uninstall aws-load-balancer-controller -n kube-system
+
+k get deploy -n kube-system
+kubectl describe deployment -n kube-system aws-load-balancer-controller
+
+kubectl get deployment -n kube-system aws-load-balancer-controller
+
+kubectl logs -n kube-system -l app.kubernetes.io/name=aws-load-balancer-controller
+

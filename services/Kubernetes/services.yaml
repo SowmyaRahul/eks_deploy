@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: frontend
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: frontend
   ports:
@@ -39,4 +39,4 @@ spec:
   ports:
     - protocol: TCP
       port: 8080
-      targetPort: 5000
+      targetPort: 5001

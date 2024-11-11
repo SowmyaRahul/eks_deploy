@@ -1,17 +1,15 @@
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: app-config
 data:
-  REACT_APP_API_URL: "http://backend-service:8080/api"
-  REACT_APP_API_BASE_URL_UD: "http://backend-service-ud:8080/api
-  DB_HOST: "project1.cb6oyio086hd.us-west-2.rds.amazonaws.com"      
+  REACT_APP_API_BASE_URL: "http://k8s-default-appingre-53ef42f138-1167815267.us-west-2.elb.amazonaws.com"
+  REACT_APP_API_BASE_URL_UD: "http://k8s-default-appingre-53ef42f138-1167815267.us-west-2.elb.amazonaws.com"
+  DB_HOST: "project1.cb6oyio086hd.us-west-2.rds.amazonaws.com"
   DB_NAME: "project1dbname"
   DB_USER: "project1uname"
-  
 
-
-  
   # Add more configuration items here as needed
 ---
 

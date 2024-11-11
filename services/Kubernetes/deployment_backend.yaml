@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: backend-service
-        image: 637423519309.dkr.ecr.us-west-2.amazonaws.com/backendnotes-1:latest
+        image: 637423519309.dkr.ecr.us-west-2.amazonaws.com/backend-1:latest
         ports:
         - containerPort: 5000
         env:
